@@ -102,13 +102,14 @@
 </div>
 <script>
 	$(document).ready(function() {
-		$('#logout').on('click' logout);
+		$('#logout').on('click', logout);
 	});
 	
 	function logout(){
+		
 		localStorage.clear();
         
-        window.location.href = "http://localhost:8080/registration";
+        window.location.href = "http://localhost:8080";
         	
 	}
 </script>

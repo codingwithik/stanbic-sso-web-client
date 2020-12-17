@@ -61,7 +61,7 @@
 		<div class="col-md-9 register-right">
 		
 			<div class="tab-content" id="myTabContent">
-				<div class="tab-pane fade show " id="home" role="tabpanel"
+				<div class="tab-pane fade show active" id="home" role="tabpanel"
 					aria-labelledby="home-tab">
 					<h3 class="register-heading">Create a OnePass Profile</h3>
 					<div class="row register-form">
@@ -105,7 +105,7 @@
 									placeholder="Confirm Password *" id="confirmPassword" />
 							</div>
 						
-							<input type="submit" class="btnRegister" id="submitReg" value="Register" />
+							<input type="submit" class="btnRegister" id="submitRegister" value="Register" />
 							<i class="fa fa-spinner fa-spin fa-fw fa-2x" style="display: none;" id="loader_reg"></i>
 						</div>
 					</div>
@@ -142,7 +142,7 @@
 					<div class="row register-form text-center">
 						<div class="col-md-4"></div>
 						<h3 class="register-heading text-center">&nbsp; &nbsp;&nbsp;
-						Your OnePass registration was successful <a id="log_reg">click here</a> to login</h3>
+						Your OnePass registration was successful <a style="cursor:pointer;" id="log_reg">click here</a> to login</h3>
 						
 					</div>
 				</div>
@@ -177,13 +177,14 @@
 
 <script>
 	$(document).ready(function() {
-		$("#reg").hide();
-		$("#successMsg").show();
+
 		hideDiv();
+		
 		$('.btnLogin').on('click', onePassLogin);
 		$('.btnRegister').on('click', onePassRegister); 
 			    
 	});
+	
 	
 	function hideDiv(){
 		$("#log").click(function(){
@@ -198,6 +199,13 @@
 		  $("#log").show();
 		  $("#reg").hide();
 		  $("#profile").hide();
+		});
+		
+		$("#log_reg").click(function(){
+			$("#home").hide();
+			$("#log").hide();
+			$("#reg").show();
+			$("#profile").show();
 		});
 	}
 	
@@ -267,7 +275,7 @@
 		var onePassId = $('#onePassId').val();
 	    var password = $('#password').val();
 	    var confirmPassword = $('#confirmPassword').val();
-	    var firtsName = $('#firstName').val();
+	    var firstName = $('#firstName').val();
 	    var lastName = $('#lastName').val();
 	    var email = $('#email').val();
 	    var phoneNumber = $('#phoneNumber').val();
@@ -275,7 +283,7 @@
 	    var uniqueIdType = "BVN";
 	    
 	    
-	    if(onePassId == "" || password == "" || email == "" || firstName == ""
+	    if(onePassId == "" || password == "" || firstName == ""
 	    		|| lastName == "" || phoneNumber == "" || uniqueId == ""){
 	    	alert("You have blank fields");
 	    	return;
@@ -289,7 +297,7 @@
 	    					lastName:lastName, phoneNumber:phoneNumber, uniqueId:uniqueId, uniqueIdType:uniqueIdType};
 	    
 	    $('#loader_reg').show();
-	    $('#sumbitRegister').hide();
+	    $('#submitRegister').hide();
 	    $.ajax({ 
 	        type: "POST",
 	        contentType: "application/json",
@@ -301,7 +309,7 @@
 	        
 	        error: function(response){
 	        	$('#loader_reg').hide();
-	    	    $('#sumbitRegister').show();
+	    	    $('#submitRegister').show();
 	    	    
 				if(response.status != "200"){
 	            	console.log(response.responseJSON.responseDescription)
@@ -312,13 +320,17 @@
 	        success: function(response) {
 	            // console.log(response);
 	            $('#loader_reg').hide();
-	            $('#sumbitRegister').show();
+	            $('#submitRegister').show();
 	            
-	            if(response.status != "201"){
+	            if(response.responseCode != "201"){
 	            	 console.log(response);
 	            	 alert(response.responseDescription);
 	            }else{
-	            	alert(response.responseDescription);
+	            	$("#home").hide();
+		      		$("#log").show();
+		      		$("#reg").hide();
+		      		$("#profile").hide();
+	            	$("#successMsg").show();
 	            	console.log(response);
 	            }
 				
