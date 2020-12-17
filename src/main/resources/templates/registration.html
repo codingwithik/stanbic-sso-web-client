@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<link href="https://colorlib.com/polygon/cooladmin/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main_bck.css}"/>
+	<style type="text/css">
+	 	 .modal-header {
+            padding:9px 15px;
+            
+            border-bottom:1px solid #eee;
+            background-color: #0480be;
+            -webkit-border-top-left-radius: 5px;
+            -webkit-border-top-right-radius: 5px;
+            -moz-border-radius-topleft: 5px;
+            -moz-border-radius-topright: 5px;
+             border-top-left-radius: 5px;
+             border-top-right-radius: 5px;
+         }
+	 </style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			userAccess();
+			
+		});
+		
+		function userAccess(){
+	        var onePassId = localStorage.getItem('onePassId');
+	        var access_token = localStorage.getItem('access_token');
+	     	
+	        
+	        if(onePassId != null && access_token != null){
+	        	window.location.href = "http://localhost:8080/link_profile";
+	        	
+	        }else{
+	        	
+	        	$('body').show();
+	        }
+		}
+	</script>
+</head>
+<body style="display:none;">
+	<div class="container register">
+	<div class="row">
+		
+		<div class="col-md-3 register-left">
+			<img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
+			<h3>Stanbic IBTC OnePass</h3>
+			<p>A single authentication and sign-on system for the stanbic IBTC app ecosystem</p>
+			<input type="button" id="log" value="Login" />
+			<input type="button" id="reg" value="Register" style="display:none;"/><br />
+		</div>
+		
+		<div class="col-md-9 register-right">
+		
+			<div class="tab-content" id="myTabContent">
+				<div class="tab-pane fade show " id="home" role="tabpanel"
+					aria-labelledby="home-tab">
+					<h3 class="register-heading">Create a OnePass Profile</h3>
+					<div class="row register-form">
+						<div class="col-md-6">
+							<div class="form-group">
+								<input type="text" class="form-control"
+									placeholder="OnePassId *" id="onePassId" />
+							</div>
+							<div class="form-group">
+								<input type="text" class="form-control"
+									placeholder="First Name *" id="firstName" />
+							</div>
+							<div class="form-group">
+								<input type="text" class="form-control"
+									placeholder="Last Name *" id="lastName" />
+							</div>
+							<div class="form-group">
+								<input type="password" class="form-control"
+									placeholder="Password *" id="password" />
+							</div>
+							
+							
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<input type="email" class="form-control"
+									placeholder="Your Email *" id="email" />
+							</div>
+							<div class="form-group">
+								<input type="number" minlength="11" maxlength="11"
+									name="txtEmpPhone" class="form-control"
+									placeholder="Your Phone *" id="phoneNumber" />
+							</div>
+							<div class="form-group">
+								<input type="number" minlength="10" maxlength="10"
+									name="bvn" class="form-control"
+									placeholder="Your BVN *" id="bvn" />
+							</div>
+							<div class="form-group">
+								<input type="password" class="form-control"
+									placeholder="Confirm Password *" id="confirmPassword" />
+							</div>
+						
+							<input type="submit" class="btnRegister" id="submitReg" value="Register" />
+							<i class="fa fa-spinner fa-spin fa-fw fa-2x" style="display: none;" id="loader_reg"></i>
+						</div>
+					</div>
+				</div>
+				
+				<div class="tab-pane fade show" id="profile" role="tabpanel"
+					aria-labelledby="profile-tab">
+					<h3 class="register-heading">Login with your OnePassId</h3>
+					<div class="row register-form text-center">
+						<div class="col-md-3">
+
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<input type="text" class="form-control"
+									placeholder="OnePassId *" id="onePassIdLogin" />
+							</div>
+							<div class="form-group">
+								<input type="password" class="form-control"
+									placeholder="Password *" id="passwordLogin" />
+							</div>
+
+							<input type="submit" class="btnLogin" id="sumbitLogin" value="Login" />
+							<i class="fa fa-spinner fa-spin fa-fw fa-2x" style="display: none;" id="loader"></i>
+						</div>
+						
+						
+					</div>
+				</div>
+				
+				<div class="tab-pane fade show" id="successMsg" role="tabpanel"
+					aria-labelledby="profile-tab">
+					
+					<div class="row register-form text-center">
+						<div class="col-md-4"></div>
+						<h3 class="register-heading text-center">&nbsp; &nbsp;&nbsp;
+						Your OnePass registration was successful <a id="log_reg">click here</a> to login</h3>
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+ <!-- modal 
+ <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>-->
+    <div class="modal" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header ">
+            <h3 class="modal-title" id="exampleModalLabel" style="color: #fff;">Success
+              
+            </h3>
+            
+          </div>
+          <div class="modal-body">
+            <h4 id="message">Item Edited Successfully!</h4>
+          </div>
+          <div class="modal-footer">
+            <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+            <a href="/link_profile"><button type="button" class="btn btn-primary">Ok</button></a> 
+          </div>
+        </div>
+      </div>
+    </div>
+
+<script>
+	$(document).ready(function() {
+		$("#reg").hide();
+		$("#successMsg").show();
+		hideDiv();
+		$('.btnLogin').on('click', onePassLogin);
+		$('.btnRegister').on('click', onePassRegister); 
+			    
+	});
+	
+	function hideDiv(){
+		$("#log").click(function(){
+		  $("#home").hide();
+		  $("#log").hide();
+		  $("#reg").show();
+		  $("#profile").show();
+		});
+
+		$("#reg").click(function(){
+		  $("#home").show();
+		  $("#log").show();
+		  $("#reg").hide();
+		  $("#profile").hide();
+		});
+	}
+	
+	function onePassLogin(){
+		
+		var onePassId = $('#onePassIdLogin').val();
+	    var password = $('#passwordLogin').val();
+	    
+	    if(onePassId == "" || password == ""){
+	    	alert("You have blank fields");
+	    	return;
+	    }
+	    
+	    var jsonString = {onePassId:onePassId, password:password};
+	    
+	    $('#loader').show();
+	    $('#sumbitLogin').hide();
+	    $.ajax({ 
+	        type: "POST",
+	        contentType: "application/json",
+	        dataType: "json",
+	        cache: false,
+	        url: "https://thawing-journey-87925.herokuapp.com/api/v1/loginUsingOnePassId",
+	        data: JSON.stringify(jsonString),
+	        timeout: 60000, // sets timeout to one minute
+	        
+	        error: function(response){
+	        	$('#loader').hide();
+	    	    $('#sumbitLogin').show();
+	    	    
+				if(response.status != "200"){
+	            	console.log(response.responseJSON.responseDescription)
+	            	alert(response.responseJSON.responseDescription);
+	            }
+	        },
+
+	        success: function(response) {
+	            // console.log(response);
+	            $('#loader').hide();
+	            $('#sumbitLogin').show();
+	            
+	            if(response.responseCode != "200"){
+	            	 console.log(response);
+	            	 alert("success1 "+response.responseDescription);
+	            }else{
+	            	//alert(response.responseDescription);
+	            	console.log(response.responsePayload.access_token);
+	            	localStorage.setItem('access_token', response.responsePayload.access_token);
+	            	localStorage.setItem('onePassId', onePassId);
+	            	
+	            	$('#message').html(response.responseDescription);
+	            	$('#modal').modal('show');
+
+	                $('#modal').on('hidden.bs.modal', function () {
+	                    
+	                	window.location.href = "http://localhost:8080/link_profile";
+	                })
+	                
+	            }
+				
+	        }
+	    });
+	}
+	
+	function onePassRegister(){
+		
+		var onePassId = $('#onePassId').val();
+	    var password = $('#password').val();
+	    var confirmPassword = $('#confirmPassword').val();
+	    var firtsName = $('#firstName').val();
+	    var lastName = $('#lastName').val();
+	    var email = $('#email').val();
+	    var phoneNumber = $('#phoneNumber').val();
+	    var uniqueId = $('#bvn').val();
+	    var uniqueIdType = "BVN";
+	    
+	    
+	    if(onePassId == "" || password == "" || email == "" || firstName == ""
+	    		|| lastName == "" || phoneNumber == "" || uniqueId == ""){
+	    	alert("You have blank fields");
+	    	return;
+	    }
+	    
+	    if(password != confirmPassword){
+	    	alert("Password do not match");
+	    	return;
+	    }
+	    var jsonString = {onePassId:onePassId, password:password, email:email, firstName:firstName,
+	    					lastName:lastName, phoneNumber:phoneNumber, uniqueId:uniqueId, uniqueIdType:uniqueIdType};
+	    
+	    $('#loader_reg').show();
+	    $('#sumbitRegister').hide();
+	    $.ajax({ 
+	        type: "POST",
+	        contentType: "application/json",
+	        dataType: "json",
+	        cache: false,
+	        url: "https://thawing-journey-87925.herokuapp.com/api/v1/createAOnePassProfile",
+	        data: JSON.stringify(jsonString),
+	        timeout: 60000, // sets timeout to one minute
+	        
+	        error: function(response){
+	        	$('#loader_reg').hide();
+	    	    $('#sumbitRegister').show();
+	    	    
+				if(response.status != "200"){
+	            	console.log(response.responseJSON.responseDescription)
+	            	alert(response.responseJSON.responseDescription);
+	            }
+	        },
+
+	        success: function(response) {
+	            // console.log(response);
+	            $('#loader_reg').hide();
+	            $('#sumbitRegister').show();
+	            
+	            if(response.status != "201"){
+	            	 console.log(response);
+	            	 alert(response.responseDescription);
+	            }else{
+	            	alert(response.responseDescription);
+	            	console.log(response);
+	            }
+				
+	        }
+	    });
+	}
+</script>
+</body>

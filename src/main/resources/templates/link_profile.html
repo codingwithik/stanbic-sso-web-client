@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap-extended.min.css">
+<link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/fonts/simple-line-icons/style.min.css">
+<link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/colors.min.css">
+<link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap.min.css">
+<link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+	$(document).ready(function() {
+		userAccess();
+		
+	});
+	
+	function userAccess(){
+        var onePassId = localStorage.getItem('onePassId');
+        var access_token = localStorage.getItem('access_token');
+     	
+        
+        if(onePassId != null && access_token != null){
+        	
+        	$('body').show();
+        }else{
+        	window.location.href = "http://localhost:8080/registration";
+        	
+        }
+	}
+</script>
+</head>
+<body style="display: none;">
+<div class="register container">
+  
+  <section id="stats-subtitle">
+  <div class="row">
+    <div class="col-12 mt-3 mb-1">
+      <h4 class="text-uppercase">Link a new profile</h4>
+      <p>Select a module <a id="logout">Logout</a></p>
+      
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xl-6 col-md-12">
+      <div class="card overflow-hidden">
+      <a href="/book_login" style="cursor:pointer">
+        <div class="card-content">
+          <div class="card-body cleartfix">
+            <div class="media align-items-stretch">
+              <div class="align-self-center">
+                <i class="icon-book-open primary font-large-2 mr-2"></i>
+              </div>
+              <div class="media-body">
+              	<br>
+                <h4>Stanbic IBTC</h4>
+                <span>Book Library</span>
+                <br><br>
+              </div>
+              <div class="align-self-center">
+                <h1></h1>
+              </div>
+            </div>
+          </div>
+        </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="col-xl-6 col-md-12">
+    
+      <div class="card">
+      <a href="/poc_login" style="cursor:pointer">
+        <div class="card-content">
+          <div class="card-body cleartfix">
+            <div class="media align-items-stretch">
+              <div class="align-self-center">
+                <i class="icon-direction danger font-large-2 mr-2"></i>
+              </div>
+              <div class="media-body">
+              	<br>
+                <h4>Stanbic IBTC</h4>
+                <span>POC</span>
+                <br><br>
+              </div>
+              <div class="align-self-center"> 
+                <h1></h1>
+              </div>
+            </div>
+          </div>
+        </div>
+        </a>
+      </div>
+    </div> 
+  </div>
+  
+
+  
+</section>
+</div>
+<script>
+	$(document).ready(function() {
+		$('#logout').on('click' logout);
+	});
+	
+	function logout(){
+		localStorage.clear();
+        
+        window.location.href = "http://localhost:8080/registration";
+        	
+	}
+</script>
+</body>
