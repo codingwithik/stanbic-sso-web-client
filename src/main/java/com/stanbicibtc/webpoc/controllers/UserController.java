@@ -33,8 +33,8 @@ public class UserController {
     }
     
     @GetMapping("/")
-    public String registration() {
-        return "/registration";
+    public String index() {
+        return "/index";
     }
     
     @GetMapping("/link_profile")
