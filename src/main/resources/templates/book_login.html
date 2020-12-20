@@ -48,6 +48,7 @@
 		function fetchSubsidiaryDetails(){
 			
 			var onePassId = localStorage.getItem("onePassId");
+			var access_token = localStorage.getItem('access_token');
 		    
 		    $.ajax({ 
 		        type: "GET",
@@ -205,7 +206,7 @@
 		}
 
 		
-		function linkSubsidiary(String username){
+		function linkSubsidiary(username){
 			
 			var onePassId = localStorage.getItem("onePassId");
 		    

@@ -48,7 +48,8 @@
 		function fetchSubsidiaryDetails(){
 			
 			var onePassId = localStorage.getItem("onePassId");
-		    
+			var access_token = localStorage.getItem('access_token');
+			
 		    $.ajax({ 
 		        type: "GET",
 		        contentType: "application/json",
@@ -66,11 +67,12 @@
 		        },
 
 		        success: function(response) {
-		            // console.log(response);
+		            console.log(response);
 		            if(response.length == 0){
 		            	$('body').show();
 		            }else{
 		            	//redirect
+		            	window.location.href = "https://stanbic-poc.herokuapp.com/sso?ssoToken="+access_token;
 		            }
 		            console.log(response);
 		            
@@ -152,7 +154,7 @@
 		});
 		
 		function pocValidation(){
-			
+				
 			var username = $('#username').val();
 		    var password = $('#password').val();
 		    
@@ -179,22 +181,21 @@
 		    	    $('#sumbitLogin').show();
 		    	    
 					if(response.status != "200"){
-		            	console.log(response)
-		            	
+		            	console.log(response.responseJSON)
+		            	alert(response.responseJSON.message);
 		            }
 		        },
 
 		        success: function(response) {
-		            // console.log(response);
+		            console.log(response.token);
 		            $('#loader').hide();
 		            $('#sumbitLogin').show();
 		            
-		            if(response.responseCode != "200"){
-		            	 console.log(response);
-		            	 
+		            if(response.token == ""){
+		            	alert("Something went wrong..."); 
 		            }else{
-		            	//alert(response.responseDescription);
-		            	console.log(response);
+		            
+		            	console.log("inside linking..."+response.token);
 		            	linkSubsidiary(username);
 		                
 		            }
@@ -204,7 +205,7 @@
 		}
 
 		
-		function linkSubsidiary(String username){
+		function linkSubsidiary(username){
 			
 			var onePassId = localStorage.getItem("onePassId");
 			var access_token = localStorage.getItem('access_token');
@@ -238,12 +239,12 @@
 		            }else{
 		            	
 		            
-	            	$('#modal').modal('show');
-
-	                $('#modal').on('hidden.bs.modal', function () {
-	                	//redirect
-	                	window.location.href = "https://stanbic-poc.herokuapp.com/sso?ssoToken="+access_token;
-	                })
+		            	$('#modal').modal('show');
+	
+		                $('#modal').on('hidden.bs.modal', function () {
+		                	//redirect
+		                	window.location.href = "https://stanbic-poc.herokuapp.com/sso?ssoToken="+access_token;
+		                })
 		            }
 		            
 		        }
