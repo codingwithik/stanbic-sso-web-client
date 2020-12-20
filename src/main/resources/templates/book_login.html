@@ -38,11 +38,44 @@
 	        
 	        if(onePassId != null && access_token != null){
 	        	
-	        	$('body').show();
+	        	fetchSubsidiaryDetails();
 	        }else{
-	        	window.location.href = "http://localhost:8080/registration";
+	        	window.location.href = "http://localhost:8080";
 	        	
 	        }
+		}
+		
+		function fetchSubsidiaryDetails(){
+			
+			var onePassId = localStorage.getItem("onePassId");
+		    
+		    $.ajax({ 
+		        type: "GET",
+		        contentType: "application/json",
+		        dataType: "json",
+		        cache: false,
+		        url: "https://thawing-journey-87925.herokuapp.com/api/v1/onepass/get/"+onePassId+"/1",
+		        timeout: 60000, // sets timeout to one minute
+		        
+		        error: function(response){
+		        	
+					if(response.status != "200"){
+		            	console.log(response)
+		            	alert(response);
+		            }
+		        },
+
+		        success: function(response) {
+		            // console.log(response);
+		            if(response.length == 0){
+		            	$('body').show();
+		            }else{
+		            	//redirect
+		            }
+		            console.log(response);
+		            
+		        }
+		    });
 		}
 	</script>
 </head>
@@ -71,11 +104,11 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<input type="text" class="form-control"
-									placeholder="Username *" id="onePassIdLogin" />
+									placeholder="Username *" id="username" />
 							</div>
 							<div class="form-group">
 								<input type="password" class="form-control"
-									placeholder="Password *" id="passwordLogin" />
+									placeholder="Password *" id="password" />
 							</div>
 
 							<input type="submit" class="btnLogin" id="sumbitLogin" value="Login" />
@@ -112,7 +145,111 @@
         </div>
       </div>
     </div>
+	
+		<script>
+		$(document).ready(function() {
+			
+			$('.btnLogin').on('click', pocValidation);
+		});
+		
+		function pocValidation(){
+			
+			var username = $('#username').val();
+		    var password = $('#password').val();
+		    
+		    if(username == "" || password == ""){
+		    	alert("You have blank fields");
+		    	return;
+		    }
+		    
+		    var jsonString = {username:username, password:password};
+		    
+		    $('#loader').show();
+		    $('#sumbitLogin').hide();
+		    $.ajax({ 
+		        type: "POST",
+		        contentType: "application/json",
+		        dataType: "json",
+		        cache: false,
+		        url: "https://rocky-temple-81565.herokuapp.com/user/validate",
+		        data: JSON.stringify(jsonString),
+		        timeout: 60000, // sets timeout to one minute
+		        
+		        error: function(response){
+		        	$('#loader').hide();
+		    	    $('#sumbitLogin').show();
+		    	    
+					if(response.status != "200"){
+		            	console.log(response)
+		            	
+		            }
+		        },
 
+		        success: function(response) {
+		            // console.log(response);
+		            $('#loader').hide();
+		            $('#sumbitLogin').show();
+		            
+		            if(response.responseCode != "200"){
+		            	 console.log(response);
+		            	 
+		            }else{
+		            	//alert(response.responseDescription);
+		            	console.log(response);
+		            	linkSubsidiary(username);
+		                
+		            }
+					
+		        }
+		    });
+		}
+
+		
+		function linkSubsidiary(String username){
+			
+			var onePassId = localStorage.getItem("onePassId");
+		    
+			var jsonString = {appId:1, onePassId:onePassId, appUsername:username};
+		    
+		    $.ajax({ 
+		        type: "POST",
+		        contentType: "application/json",
+		        dataType: "json",
+		        cache: false,
+		        url: "https://thawing-journey-87925.herokuapp.com/api/v1/bindToOnePassProfile",
+		        data: JSON.stringify(jsonString),
+		        timeout: 60000, // sets timeout to one minute
+		        
+		        error: function(response){
+		        	
+					if(response.status != "200"){
+		            	console.log(response)
+		            	alert(response);
+		            }
+		        },
+
+		        success: function(response) {
+		            
+		            
+		            console.log(response);
+		            if(response.responseCode != "201"){
+		            	 
+		            	 alert(response.responseDescription);
+		            }else{
+		            	
+		            
+	            	$('#modal').modal('show');
+
+	                $('#modal').on('hidden.bs.modal', function () {
+	                	//redirect
+	                	//window.location.href = "http://localhost:8080/link_profile";
+	                })
+		            }
+		            
+		        }
+		    });
+		}
+	</script>
 
 </body>
 </html>

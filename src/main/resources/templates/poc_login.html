@@ -38,11 +38,44 @@
 	        
 	        if(onePassId != null && access_token != null){
 	        	
-	        	$('body').show();
+	        	fetchSubsidiaryDetails();
 	        }else{
-	        	window.location.href = "http://localhost:8080/registration";
+	        	window.location.href = "http://localhost:8080";
 	        	
 	        }
+		}
+		
+		function fetchSubsidiaryDetails(){
+			
+			var onePassId = localStorage.getItem("onePassId");
+		    
+		    $.ajax({ 
+		        type: "GET",
+		        contentType: "application/json",
+		        dataType: "json",
+		        cache: false,
+		        url: "https://thawing-journey-87925.herokuapp.com/api/v1/onepass/get/"+onePassId+"/4",
+		        timeout: 60000, // sets timeout to one minute
+		        
+		        error: function(response){
+		        	
+					if(response.status != "200"){
+		            	console.log(response)
+		            	alert(response);
+		            }
+		        },
+
+		        success: function(response) {
+		            // console.log(response);
+		            if(response.length == 0){
+		            	$('body').show();
+		            }else{
+		            	//redirect
+		            }
+		            console.log(response);
+		            
+		        }
+		    });
 		}
 	</script>
 </head>
@@ -70,11 +103,11 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<input type="text" class="form-control"
-									placeholder="Email *" id="onePassIdLogin" />
+									placeholder="Username *" id="username" />
 							</div>
 							<div class="form-group">
 								<input type="password" class="form-control"
-									placeholder="Password *" id="passwordLogin" />
+									placeholder="Password *" id="password" />
 							</div>
 
 							<input type="submit" class="btnLogin" id="sumbitLogin" value="Login" />
@@ -102,63 +135,120 @@
             
           </div>
           <div class="modal-body">
-            <h4 id="message">Item Edited Successfully!</h4>
+            <h4 id="message">Validation Successful</h4>
           </div>
           <div class="modal-footer">
             <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-            <a href="/link_profile"><button type="button" class="btn btn-primary">Ok</button></a> 
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button> 
           </div>
         </div>
       </div>
     </div>
-
-<script>
-	$(document).ready(function() {
-
-		fetchSubsidiaryDetails(); 
-			    
-	});
 	
-
-	
-	function fetchSubsidiaryDetails(){
+	<script>
+		$(document).ready(function() {
+			
+			$('.btnLogin').on('click', pocValidation);
+		});
 		
-		var onePassId = localStorage.getItem("onePassId");
-	    
-	    $.ajax({ 
-	        type: "GET",
-	        contentType: "application/json",
-	        dataType: "json",
-	        cache: false,
-	        url: "https://thawing-journey-87925.herokuapp.com/api/v1/onepass/get/"+onePassId+"/4",
-	        timeout: 60000, // sets timeout to one minute
-	        
-	        error: function(response){
-	        	
-				if(response.status != "200"){
-	            	console.log(response.responseJSON.responseDescription)
-	            	alert(response.responseJSON.responseDescription);
-	            }
-	        },
+		function pocValidation(){
+			
+			var username = $('#username').val();
+		    var password = $('#password').val();
+		    
+		    if(username == "" || password == ""){
+		    	alert("You have blank fields");
+		    	return;
+		    }
+		    
+		    var jsonString = {username:username, password:password};
+		    
+		    $('#loader').show();
+		    $('#sumbitLogin').hide();
+		    $.ajax({ 
+		        type: "POST",
+		        contentType: "application/json",
+		        dataType: "json",
+		        cache: false,
+		        url: "https://stanbic-poc.herokuapp.com/auth",
+		        data: JSON.stringify(jsonString),
+		        timeout: 60000, // sets timeout to one minute
+		        
+		        error: function(response){
+		        	$('#loader').hide();
+		    	    $('#sumbitLogin').show();
+		    	    
+					if(response.status != "200"){
+		            	console.log(response)
+		            	
+		            }
+		        },
 
-	        success: function(response) {
-	            // console.log(response);
-	            
-	            
-	            if(response.responseCode != "200"){
-	            	 console.log(response);
-	            	 alert(response.responseDescription);
-	            }else{
-	            	//alert(response.responseDescription);
-	            	console.log(response);
-	                
-	            }
-				
-	        }
-	    });
-	}
-	
+		        success: function(response) {
+		            // console.log(response);
+		            $('#loader').hide();
+		            $('#sumbitLogin').show();
+		            
+		            if(response.responseCode != "200"){
+		            	 console.log(response);
+		            	 
+		            }else{
+		            	//alert(response.responseDescription);
+		            	console.log(response);
+		            	linkSubsidiary(username);
+		                
+		            }
+					
+		        }
+		    });
+		}
 
-</script>
+		
+		function linkSubsidiary(String username){
+			
+			var onePassId = localStorage.getItem("onePassId");
+			var access_token = localStorage.getItem('access_token');
+		    
+			var jsonString = {appId:4, onePassId:onePassId, appUsername:username};
+		    
+		    $.ajax({ 
+		        type: "POST",
+		        contentType: "application/json",
+		        dataType: "json",
+		        cache: false,
+		        url: "https://thawing-journey-87925.herokuapp.com/api/v1/bindToOnePassProfile",
+		        data: JSON.stringify(jsonString),
+		        timeout: 60000, // sets timeout to one minute
+		        
+		        error: function(response){
+		        	
+					if(response.status != "200"){
+		            	console.log(response)
+		            	alert(response);
+		            }
+		        },
 
+		        success: function(response) {
+		            
+		            
+		            console.log(response);
+		            if(response.responseCode != "201"){
+		            	 
+		            	 alert(response.responseDescription);
+		            }else{
+		            	
+		            
+	            	$('#modal').modal('show');
+
+	                $('#modal').on('hidden.bs.modal', function () {
+	                	//redirect
+	                	window.location.href = "https://stanbic-poc.herokuapp.com/sso?ssoToken="+access_token;
+	                })
+		            }
+		            
+		        }
+		    });
+		}
+	</script>
 </body>
+</html>
