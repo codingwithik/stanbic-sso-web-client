@@ -39,17 +39,17 @@ public class UserController {
     
     @GetMapping("/link_profile")
     public String linkProfile() {
-        return "/link_profile";
+        return "link_profile";
     }
     
     @GetMapping("/book_login")
     public String bookLogin() {
-        return "/book_login";
+        return "book_login";
     }
     
     @GetMapping("/poc_login")
     public String pocLogin() {
-        return "/poc_login";
+        return "poc_login";
     }
     
     @PostMapping("/login")

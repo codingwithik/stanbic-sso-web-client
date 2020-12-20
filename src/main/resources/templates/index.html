@@ -40,7 +40,8 @@
 	     	
 	        
 	        if(onePassId != null && access_token != null){
-	        	window.location.href = "http://localhost:8080/link_profile";
+	        	//window.location.href = "http://localhost:8080/link_profile";
+	        	window.location.href = "https://quiet-garden-64546.herokuapp.com/link_profile";
 	        	
 	        }else{
 	        	
@@ -57,14 +58,14 @@
 			<img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
 			<h3>Stanbic IBTC OnePass</h3>
 			<p>A single authentication and sign-on system for the stanbic IBTC app ecosystem</p>
-			<input type="button" id="log" value="Login" />
-			<input type="button" id="reg" value="Register" style="display:none;"/><br />
+			<input type="button" id="log" value="Login" style="display:none;"/>
+			<input type="button" id="reg" value="Register"/><br />
 		</div>
 		
 		<div class="col-md-9 register-right">
 		
 			<div class="tab-content" id="myTabContent">
-				<div class="tab-pane fade show active" id="home" role="tabpanel"
+				<div class="tab-pane fade show" id="home" role="tabpanel"
 					aria-labelledby="home-tab">
 					<h3 class="register-heading">Create a OnePass Profile</h3>
 					<div class="row register-form">
@@ -114,7 +115,7 @@
 					</div>
 				</div>
 				
-				<div class="tab-pane fade show" id="profile" role="tabpanel"
+				<div class="tab-pane fade show active" id="profile" role="tabpanel"
 					aria-labelledby="profile-tab">
 					<h3 class="register-heading">Login with your OnePassId</h3>
 					<div class="row register-form text-center">
@@ -252,7 +253,7 @@
 	            
 	            if(response.responseCode != "200"){
 	            	 console.log(response);
-	            	 alert("success1 "+response.responseDescription);
+	            	 alert(response.responseDescription);
 	            }else{
 	            	//alert(response.responseDescription);
 	            	console.log(response.responsePayload.access_token);
@@ -263,8 +264,8 @@
 	            	$('#modal').modal('show');
 
 	                $('#modal').on('hidden.bs.modal', function () {
-	                    
-	                	window.location.href = "http://localhost:8080/link_profile";
+	                	window.location.href = "https://quiet-garden-64546.herokuapp.com/link_profile";
+	                	//window.location.href = "http://localhost:8080/link_profile";
 	                })
 	                
 	            }
