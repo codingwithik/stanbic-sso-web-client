@@ -73,6 +73,7 @@
 		            	$('body').show();
 		            }else{
 		            	//redirect
+		            	window.location.href = "https://rocky-temple-81565.herokuapp.comsso?ssoToken="+access_token;
 		            }
 		            console.log(response);
 		            
@@ -182,7 +183,9 @@
 		    	    $('#sumbitLogin').show();
 		    	    
 					if(response.status != "200"){
-		            	console.log(response)
+		            	//console.log(response)
+		            	console.log(response.responseJSON)
+		            	alert(response.responseJSON.message);
 		            	
 		            }
 		        },
@@ -192,9 +195,9 @@
 		            $('#loader').hide();
 		            $('#sumbitLogin').show();
 		            
-		            if(response.responseCode != "200"){
+		            if(response.username == ""){
 		            	 console.log(response);
-		            	 
+		            	 alert("Something went wrong..."); 
 		            }else{
 		            	//alert(response.responseDescription);
 		            	console.log(response);
@@ -210,7 +213,8 @@
 		function linkSubsidiary(username){
 			
 			var onePassId = localStorage.getItem("onePassId");
-		    
+			var access_token = localStorage.getItem('access_token');
+			
 			var jsonString = {appId:1, onePassId:onePassId, appUsername:username};
 		    
 		    $.ajax({ 
@@ -240,12 +244,12 @@
 		            }else{
 		            	
 		            
-	            	$('#modal').modal('show');
-
-	                $('#modal').on('hidden.bs.modal', function () {
-	                	//redirect
-	                	//window.location.href = "http://localhost:8080/link_profile";
-	                })
+		            	$('#modal').modal('show');
+	
+		                $('#modal').on('hidden.bs.modal', function () {
+		                	//redirect
+		                	window.location.href = "https://rocky-temple-81565.herokuapp.com/sso?ssoToken="+access_token;
+		                })
 		            }
 		            
 		        }

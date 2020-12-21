@@ -341,5 +341,12 @@
 	        }
 	    });
 	}
+	
+	function setToken(token, expires) {
+		var cookieString = '_token=' + token + ';secure;' + expires + ';path=/';
+		document.cookie = cookieString;
+
+		return document.cookie;
+	}
 </script>
 </body>
