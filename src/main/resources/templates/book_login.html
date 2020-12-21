@@ -152,10 +152,10 @@
 		<script>
 		$(document).ready(function() {
 			
-			$('.btnLogin').on('click', pocValidation);
+			$('.btnLogin').on('click', bookValidation);
 		});
 		
-		function pocValidation(){
+		function bookValidation(){
 			
 			var username = $('#username').val();
 		    var password = $('#password').val();
@@ -165,7 +165,7 @@
 		    	return;
 		    }
 		    
-		    var jsonString = {username:username, password:password};
+		    var jsonString = {username:username, other:password};
 		    
 		    $('#loader').show();
 		    $('#sumbitLogin').hide();
