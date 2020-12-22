@@ -102,7 +102,7 @@
 </div>
 <script>
 	$(document).ready(function() {
-		$('#logout').on('click', logout);
+		$('#logout').on('click', invalidateToken);
 	});
 	
 	function logout(){
@@ -112,5 +112,46 @@
         window.location.href = "https://quiet-garden-64546.herokuapp.com";
         	
 	}
+	
+	function invalidateToken(){
+		
+		var onePassId = localStorage.getItem("onePassId");
+		
+		var jsonString = {onePassId:onePassId};
+	    
+	    $.ajax({ 
+	        type: "POST",
+	        contentType: "application/json",
+	        dataType: "json",
+	        cache: false,
+	        url: window.location+"/api/v1/logout",
+	        data: JSON.stringify(jsonString),
+	        timeout: 60000, // sets timeout to one minute
+	        
+	        error: function(response){
+	        	
+				if(response.status != "200"){
+	            	console.log(response)
+	            	alert(response);
+	            }
+	        },
+
+	        success: function(response) {
+	            
+	            
+	            console.log(response);
+	            if(response.responseCode != "200"){
+	            	 
+	            	 alert(response.responseDescription);
+	            }else{
+	            	
+	            
+					logout();
+	            }
+	            
+	        }
+	    });
+	}
+	
 </script>
 </body>
