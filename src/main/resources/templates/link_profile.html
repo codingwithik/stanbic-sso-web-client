@@ -12,9 +12,34 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script>
 	$(document).ready(function() {
+		
+		
+		if(document.location.search.length) {
+		    // query string exists
+		    //alert(document.location.search);
+		    logout();
+		}
 		userAccess();
 		
 	});
+	
+	function logout(){
+		
+		localStorage.clear();
+        
+        window.location.href = "https://quiet-garden-64546.herokuapp.com";
+        	
+	}
+	
+	$.urlParam = function(name){
+        var results = new RegExp('[\?&]' + name + '=([^]*)').exec(window.location.href);
+        if (results==null){
+           return null;
+        }
+        else{
+           return results[1] || 0;
+        }
+    }
 	
 	function userAccess(){
         var onePassId = localStorage.getItem('onePassId');
