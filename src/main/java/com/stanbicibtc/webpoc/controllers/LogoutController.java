@@ -1,7 +1,6 @@
 package com.stanbicibtc.webpoc.controllers;
 
-import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
-import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,10 +30,6 @@ public class LogoutController {
 			return new GenericResponse("Invalid Credentials", "false", "101");
 		}
 		
-		new HeaderWriterLogoutHandler(new ClearSiteDataHeaderWriter(
-					ClearSiteDataHeaderWriter.Directive.CACHE,
-	              ClearSiteDataHeaderWriter.Directive.COOKIES,
-	              ClearSiteDataHeaderWriter.Directive.STORAGE));
 		
 		return new GenericResponse("Request Successful", "true", "000");
 	}
