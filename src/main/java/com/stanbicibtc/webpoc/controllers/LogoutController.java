@@ -1,6 +1,5 @@
 package com.stanbicibtc.webpoc.controllers;
 
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,8 +13,7 @@ import com.stanbicibtc.webpoc.pojo.RespDTO;
 @RestController
 @RequestMapping(path = "api")
 public class LogoutController {
-	
-	
+		
 	private KeycloakHttpClientServiceCaller handler;
 	
 	@PostMapping("/v1/logout")
@@ -30,7 +28,7 @@ public class LogoutController {
 			return new GenericResponse("Invalid Credentials", "false", "101");
 		}
 		
-		
 		return new GenericResponse("Request Successful", "true", "000");
 	}
+	
 }

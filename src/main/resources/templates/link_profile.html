@@ -120,12 +120,12 @@
       </div>
     </div> 
   </div>
-  
-
-  
+    
 </section>
 </div>
+
 <script>
+	
 	$(document).ready(function() {
 		$('#logout').on('click', invalidateToken);
 	});
@@ -170,8 +170,43 @@
 	            	 alert(response.responseDescription);
 	            }else{
 	            	
-	            
+	            	invalidatePocToken();   
 					logout();
+	            }
+	            
+	        }
+	    });
+	}
+	
+	function invalidatePocToken(){
+		
+		var onePassId = localStorage.getItem("onePassId");
+		
+		var jsonString = {onePassId:onePassId};
+	    
+	    $.ajax({ 
+	        type: "POST",
+	        contentType: "application/json",
+	        dataType: "json",
+	        cache: false,
+	        url: "https://stanbic-poc.herokuapp.com/sso/logout",
+	        data: JSON.stringify(jsonString),
+	        timeout: 60000, // sets timeout to one minute
+	        
+	        error: function(response){
+	        	
+				if(response.status != "200"){
+	            	console.log(response)
+	            	alert(response);
+	            }
+	        },
+
+	        success: function(response) {
+	            
+	            console.log(response);
+	            if(response.Code != "200"){
+	            	 
+	            	 alert(response.message);
 	            }
 	            
 	        }
