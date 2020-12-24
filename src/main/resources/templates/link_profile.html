@@ -204,11 +204,10 @@
 	        success: function(response) {
 	            
 	            console.log(response);
-	            if(response.Code != 200){
-	            	 
-	            	 alert(response.message);
+	            if(response.Code != "200"){
+	            	logout(); 
 	            }else{
-	            	logout();
+	            	alert(response.message);
 	            }
 	            
 	        }
