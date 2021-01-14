@@ -181,7 +181,8 @@
 
 <script>
 	$(document).ready(function() {
-
+		
+		var ipAddress;
 		hideDiv();
 		
 		$('.btnLogin').on('click', onePassLogin);
@@ -215,6 +216,11 @@
 	
 	function onePassLogin(){
 		
+		$.getJSON("http://jsonip.appspot.com?callback=?",
+		    function(data){
+		       //alert( "Your ip: " + data.ip);
+		       ipAddress = data.ip;
+		  });
 		var onePassId = $('#onePassIdLogin').val();
 	    var password = $('#passwordLogin').val();
 	    
@@ -223,7 +229,7 @@
 	    	return;
 	    }
 	    
-	    var jsonString = {onePassId:onePassId, password:password};
+	    var jsonString = {onePassId:onePassId, password:password, ipAddress:ipAddress};
 	    
 	    $('#loader').show();
 	    $('#sumbitLogin').hide();
