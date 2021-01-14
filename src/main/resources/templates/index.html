@@ -180,9 +180,11 @@
     </div>
 
 <script>
+	var ipAddress;
 	$(document).ready(function() {
 		
-		var ipAddress;
+		getIpAddress();
+		
 		hideDiv();
 		
 		$('.btnLogin').on('click', onePassLogin);
@@ -214,13 +216,27 @@
 		});
 	}
 	
+	function getIpAddress(){
+	
+	
+	    $.ajax({ 
+	        type: "GET",
+	        cache: false,
+	        url: "http://api.hostip.info/get_json.php",
+	        timeout: 60000, // sets timeout to one minute
+	        
+	        error: function(response){
+	        	
+	        },
+
+	        success: function(response) {
+				ipAddress = response['ip'];
+	        }
+	    });
+	}
+	
 	function onePassLogin(){
 		
-		$.getJSON("http://jsonip.appspot.com?callback=?",
-		    function(data){
-		       //alert( "Your ip: " + data.ip);
-		       ipAddress = data.ip;
-		  });
 		var onePassId = $('#onePassIdLogin').val();
 	    var password = $('#passwordLogin').val();
 	    
